@@ -1,45 +1,55 @@
-import React, { Component } from 'react';
-import { CardList } from './components/card-list/card-list.component'
-import './App.css';
+import React from 'react';
+import { Router, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-class App extends Component
+import { history } from './helpers/History';
+import { alertActions } from './redux/alert/AlertActions';
+import { PrivateRoute } from './components/PrivateRoute';
+import { HomePage } from './pages/HomePage/HomePage';
+import { LoginPage } from './pages/LoginPage/LoginPage';
+
+class App extends React.Component 
 {
-  constructor()
-  {
-    super();
-
-    this.state = 
+    constructor(props) 
     {
-     monsters: 
-     [
-       //{name: 'Frankeinstein', id: 'nm1'},{name: 'Dracula', id: 'nm2'},{name: 'Zombie', id: 'nm3'}
-     ],
-     searchField: ''
-    }
-  }
+        super(props);
 
-  componentDidMount()
-  {
-    fetch('https://jsonplaceholder.typicode.com/users')
-    .then(response => response.json())
-    .then(users => this.setState({monsters: users})); 
-  }
-  
-  render()
-  {
-    const {monsters, searchField} = this.state;
-    const filteredMonsters = monsters.filter(monster => monster.name.toLowerCase().includes(searchField.toLowerCase()));
-    return (
-      <div className="App">
-        <input 
-          type="search" 
-          placeholder="Search Monsters" 
-          onChange={e => this.setState({searchField: e.target.value})} 
-          />
-        <CardList monsters={filteredMonsters}/>
-      </div>
-    )
-  }
+        const { dispatch } = this.props;
+        history.listen((location, action) => 
+        {
+            // clear alert on location change
+            dispatch(alertActions.clear());
+        });
+    }
+
+    render() {
+        const { alert } = this.props;
+        return (
+            <div className="jumbotron">
+                <div className="container">
+                    <div className="col-sm-8 col-sm-offset-2">
+                        {alert.message &&
+                            <div className={`alert ${alert.type}`}>{alert.message}</div>
+                        }
+                        <Router history={history}>
+                            <div>
+                                <PrivateRoute exact path="/" component={HomePage} />
+                                <Route path="/login" component={LoginPage} />
+                            </div>
+                        </Router>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 }
 
-export default App;
+function mapStateToProps(state) 
+{
+    const { alert } = state;
+    return {
+        alert
+    };
+}
+
+export default connect(mapStateToProps)(App);
