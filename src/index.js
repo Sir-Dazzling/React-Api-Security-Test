@@ -8,8 +8,8 @@ import App from './App';
 import {store} from './redux/store';
 
 //Setting up fake backend
-import {configureFakeBackend} from './helpers/FakeBackend';
-configureFakeBackend();
+// import {configureFakeBackend} from './helpers/FakeBackend';
+// configureFakeBackend();
 
 render(
     <Provider store = {store}>

@@ -12,38 +12,48 @@ class HomePage extends React.Component
     }
 
     render() {
-        const { user, users } = this.props;
-        return (
-            <div className="col-md-6 col-md-offset-3">
-                <h1>Hi {user.firstName}!</h1>
-                <p>You're logged in with React & JWT!!</p>
-                <h3>Users from secure api end point:</h3>
-                {users.loading && <em>Loading users...</em>}
-                {users.error && <span className="text-danger">ERROR: {users.error}</span>}
-                {users.items &&
-                    <ul>
-                        {users.items.map((user, index) =>
-                            <li key={user.id}>
-                                {user.firstName + ' ' + user.lastName}
-                            </li>
-                        )}
-                    </ul>
-                }
-                <p>
-                    <Link to="/login">Logout</Link>
-                </p>
+        const { user } = this.props;
+
+        if(user)
+        {
+            return (
+            <div>
+                <div className="jumbotron text-center mt-5">
+                    <h1>Hi {user.username}!</h1>
+                    <p>You're logged in with React & JWT!!</p>
+                    <p>Roles: {user.roles}</p>
+                    <p>
+                        <a href="/login" onClick = {userActions.logout}>Logout</a>
+                    </p>
+                </div>
             </div>
-        );
+            );
+        }
+        else
+        {
+            return (
+            <div>
+                <div className="jumbotron text-center">
+                    <h1>Hi Guest!</h1>
+                    <p>You're logged in with React & JWT!!</p>
+                    <p>Roles: </p>
+                    <p>
+                        <a href="/login">Login</a>
+                    </p>
+                </div>
+            </div>
+            );
+        }
+        
     }
 }
 
 function mapStateToProps(state) 
 {
-    const { users, authentication } = state;
+    const { authentication } = state;
     const { user } = authentication;
     return {
-        user,
-        users
+        user
     };
 }
 

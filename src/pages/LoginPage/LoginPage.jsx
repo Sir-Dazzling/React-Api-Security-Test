@@ -43,12 +43,9 @@ class LoginPage extends React.Component
         const { loggingIn } = this.props;
         const { username, password, submitted } = this.state;
         return (
-            <div className="col-md-6 col-md-offset-3">
-                <div className="alert alert-info">
-                    Username: test<br />
-                    Password: test
-                </div>
-                <h2>Login</h2>
+            <div className = "container mt-5" style = {{border: "2px solid red"}}>
+            <div className="col-sm-6 col-md-offset-3 jumbotron">
+                <h3>Login</h3>
                 <form name="form" onSubmit={this.handleSubmit}>
                     <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
                         <label htmlFor="username">Username</label>
@@ -71,6 +68,7 @@ class LoginPage extends React.Component
                         }
                     </div>
                 </form>
+            </div>
             </div>
         );
     }

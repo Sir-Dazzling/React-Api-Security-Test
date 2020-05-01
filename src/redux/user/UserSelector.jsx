@@ -1,5 +1,7 @@
 import { authHeader } from '../../helpers/AuthHeader';
 
+const API_URL = "http://localhost:8080/api/";
+
 export const userService = 
 {
     login,
@@ -9,23 +11,27 @@ export const userService =
 
 function login(username, password) 
 {
-    const requestOptions = {
+    const requestOptions = 
+    {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
     };
 
-    return fetch(`/users/authenticate`, requestOptions)
+    return fetch( API_URL + "auth/signin", requestOptions)
         .then(handleResponse)
-        .then(user => {
+        .then( user => {
             // login successful if there's a jwt token in the response
-            if (user.token) {
+            if (user.accessToken) 
+            {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('user', JSON.stringify(user));
             }
+            
+            
 
             return user;
-        });
+    });
 }
 
 function logout() 
@@ -42,7 +48,7 @@ function getAll()
         headers: authHeader()
     };
 
-    return fetch(`/users`, requestOptions).then(handleResponse);
+    return fetch(API_URL + "test/all", requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) 
