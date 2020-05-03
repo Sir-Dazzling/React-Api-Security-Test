@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { userService} from '../../redux/user/UserSelector';
+import { Redirect } from 'react-router-dom';
 
 class ContentManagerHubPage extends React.Component 
 {
@@ -48,7 +49,8 @@ class ContentManagerHubPage extends React.Component
         }
         else
         {
-            return null;
+            return <Redirect to = "/" />;
+            
         }
             
     }

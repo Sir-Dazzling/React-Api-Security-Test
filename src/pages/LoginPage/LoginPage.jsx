@@ -41,9 +41,12 @@ class LoginPage extends React.Component
 
     render() 
     {
-        const { loggingIn } = this.props;
+        const { loggingIn, alert } = this.props;
         const { username, password, submitted } = this.state;
         return (
+            <div>
+                {alert.message &&
+                        <div className={`alert ${alert.type}`}>Invalid Credentials</div>}
             <div className = "container mt-5">
             <div className="col-sm-6 col-md-offset-3 jumbotron m-auto">
                 <h3>Login</h3>
@@ -71,6 +74,7 @@ class LoginPage extends React.Component
                 </form>
             </div>
             </div>
+            </div>
         );
     }
 }
@@ -78,8 +82,10 @@ class LoginPage extends React.Component
 function mapStateToProps(state) 
 {
     const { loggingIn } = state.authentication;
+    const { alert } = state;
     return {
-        loggingIn
+        loggingIn,
+        alert
     };
 }
 

@@ -50,7 +50,7 @@ class App extends React.Component
     render() 
     {
        const {currentUser, showContentManagerBoard, showAdminBoard} = this.state;
- 
+     
         return(
          <Router history = {history}>
             <nav className="navbar  navbar-expand-md navbar-dark bg-info">
@@ -135,11 +135,10 @@ class App extends React.Component
 
 function mapStateToProps(state) 
 {
-    const { alert } = state;
+
     const { authentication } = state;
     const { user } = authentication;
     return {
-        alert,
         user
     };
 }

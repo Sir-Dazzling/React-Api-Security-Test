@@ -5,6 +5,7 @@ import { userActions } from '../../redux/user/UserActions';
 
 class HomePage extends React.Component 
 {
+    
     componentWillUnmount()
     {
         window.location.reload(); 
