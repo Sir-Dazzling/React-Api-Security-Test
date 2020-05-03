@@ -1,19 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { userActions } from '../../redux/user/UserActions';
 
 class HomePage extends React.Component 
 {
-    componentDidMount() 
+    componentWillUnmount()
     {
-        this.props.dispatch(userActions.getAll());
+        window.location.reload(); 
     }
 
-    render() {
+    
+    render() 
+    {
         const { user } = this.props;
-
+     
         if(user)
         {
             return (

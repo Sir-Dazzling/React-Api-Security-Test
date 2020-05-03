@@ -6,7 +6,9 @@ export const userService =
 {
     login,
     logout,
-    getAll
+    getAll,
+    getContentManagerHub,
+    handleResponse
 };
 
 function login(username, password) 
@@ -28,8 +30,6 @@ function login(username, password)
                 localStorage.setItem('user', JSON.stringify(user));
             }
             
-            
-
             return user;
     });
 }
@@ -41,14 +41,25 @@ function logout()
 }
 
 function getAll()
- {
+{
     const requestOptions = 
     {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch(API_URL + "test/all", requestOptions).then(handleResponse);
+    return fetch(API_URL + "test/all", requestOptions).then((response) => handleResponse(response));
+}
+
+function getContentManagerHub()
+{
+    const requestOptions = 
+    {
+        method: "GET",
+        headers: authHeader()
+    };
+
+    return fetch(API_URL + "test/content_manager", requestOptions);
 }
 
 function handleResponse(response) 
@@ -61,7 +72,7 @@ function handleResponse(response)
             {
                 // auto logout if 401 response returned from api
                 logout();
-                window.location.reload(true);
+               // window.location.reload(true);
             }
 
             const error = (data && data.message) || response.statusText;

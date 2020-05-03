@@ -7,7 +7,8 @@ export const userActions =
 {
     login,
     logout,
-    getAll
+    getAll,
+    getContentManagerHub
 };
 
 function login(username, password) 
@@ -47,12 +48,33 @@ function getAll()
 
         userService.getAll()
             .then(
-                users => dispatch(success(users)),
-                error => dispatch(failure(error))
+                data => {
+                    dispatch(success(data))
+                },
+                error => {
+                    dispatch(failure(error))
+                }
             );
     };
 
     function request() { return { type: userConstants.GETALL_REQUEST } }
-    function success(users) { return { type: userConstants.GETALL_SUCCESS, users } }
+    function success(data) { return { type: userConstants.GETALL_SUCCESS, data } }
     function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
+}
+
+function getContentManagerHub() 
+{
+    return dispatch => {
+        dispatch(request());
+
+        userService.getContentManagerHub()
+            .then(
+                response => dispatch(success(response)),
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: userConstants.GETCONTENTMANAGER_REQUEST} }
+    function success(response) { return { type: userConstants.GETCONTENTMANAGER_SUCCESS, response } }
+    function failure(error) { return { type: userConstants.GETCONTENTMANAGER_FAILURE, error } }
 }

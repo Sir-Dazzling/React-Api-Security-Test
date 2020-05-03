@@ -10,12 +10,24 @@ export function users(state = {}, action)
       };
     case userConstants.GETALL_SUCCESS:
       return {
-        items: action.users
+        data: action.data
       };
     case userConstants.GETALL_FAILURE:
       return { 
         error: action.error
       };
+    case userConstants.GETCONTENTMANAGER_REQUEST:
+      return {
+        loading: true
+      };
+    case userConstants.GETCONTENTMANAGER_SUCCESS:
+      return{
+        data: action.data
+      }
+    case userConstants.GETCONTENTMANAGER_FAILURE:
+      return{
+        error: action.error
+      } 
     default:
       return state
   }

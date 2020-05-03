@@ -1,16 +1,14 @@
 import React from 'react';
-import { Router, Route, Switch, Link} from 'react-router-dom';
+import { Router, Route, Switch, Link, Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { history } from './helpers/History';
 import { alertActions } from './redux/alert/AlertActions';
 import { userActions } from './redux/user/UserActions';
 
-
 import { HomePage } from './pages/HomePage/HomePage';
 import { LoginPage } from './pages/LoginPage/LoginPage';
-
-
+import ContentManagerHubPage from './pages/ContentManagerHubPage/ContentManagerHubPage';
 
 class App extends React.Component 
 {
@@ -29,7 +27,7 @@ class App extends React.Component
             showContentManagerBoard: false,
             showAdminBoard: false,
             currentUser: undefined
-          };
+        };
 
     }
 
@@ -52,38 +50,44 @@ class App extends React.Component
     render() 
     {
        const {currentUser, showContentManagerBoard, showAdminBoard} = this.state;
-
+ 
         return(
          <Router history = {history}>
-            <div>
-            <nav className="navbar navbar-expand navbar-dark bg-dark">
+            <nav className="navbar  navbar-expand-md navbar-dark bg-info">
                 <Link to={"/"} className="navbar-brand">
                 DazzlingStar
                 </Link>
-                <div className="navbar-nav mr-auto">
-                <li className="nav-item">
-                    <Link to={"/home"} className="nav-link">
-                    Home
-                    </Link>
-                </li>
+                
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
 
-                {showContentManagerBoard && (
-                    <li className="nav-item">
-                    <Link to={"/mod"} className="nav-link">
-                        Content Manager Hub
-                    </Link>
-                    </li>
-                )}
+                <div className = "collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul className="navbar-nav mr-auto">
+                        <li className="nav-item">
+                            <Link to={"/home"} className="nav-link">
+                            Home
+                            </Link>
+                        </li>
 
-                {showAdminBoard && (
-                    <li className="nav-item">
-                    <Link to={"/admin"} className="nav-link">
-                        Admin Hub
-                    </Link>
-                    </li>
-                )}
+                        {(showAdminBoard || showContentManagerBoard ) && (
+                            <li className="nav-item">
+                            <Link to={"/content_manager_hub"} className="nav-link">
+                                Content Manager Hub
+                            </Link>
+                            </li>
+                        )}
 
-                </div>
+                    {showAdminBoard && (
+                        <li className="nav-item">
+                        <Link to={"/admin"} className="nav-link">
+                            Admin Hub
+                        </Link>
+                        </li>
+                    )}
+
+                </ul>
+            
 
                 {currentUser ? (
                 <div className="navbar-nav ml-auto">
@@ -113,14 +117,15 @@ class App extends React.Component
                     </li>
                 </div>
                 )}
+                </div>
             </nav>
-
+            
             <div className="container mt-3">
                 <Switch>
-                <Route exact path={["/", "/home"]} component={HomePage} />
-                <Route exact path="/login" component={LoginPage} />
+                    <Route exact path={["/", "/home"]} component={HomePage} />
+                    <Route exact path="/login" render={() => this.props.user? (<Redirect to="/" />) : (<LoginPage />) } />
+                    <Route exact path="/content_manager_hub" render={() => !this.props.user? (<Redirect to="/login" />) : (<ContentManagerHubPage />) }/>
                 </Switch>
-            </div>
             </div>
       </Router>
         );
